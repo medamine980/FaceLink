@@ -3,7 +3,7 @@ const { WebSocketServer } = require("ws")
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-
+const PORT = process.env.PORT || 8000
 
 
 const errorMessage = 'Error has occured'
@@ -83,8 +83,8 @@ const server = http.createServer((req, res) => {
         res.end('');
     }
 })
-server.listen(8000, 'localhost', () => {
-    console.log("Sever Started at", 8000)
+server.listen(PORT, () => {
+    console.log("Sever Started at", PORT)
 })
 const wss = new WebSocketServer({ server })
 
