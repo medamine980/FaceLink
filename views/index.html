@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <section class="link-container">
+                <input id="id" type="text" readonly aria-readonly="true">
+                <button class="copy-to-clipboard">Copy to clipboard</button>
+            </section>
+            <div class="message-box">
+                <ul class="message-box__messages">
+                    <li class="message-box__message">Begin Messaging</li>
+                </ul>
+            </div>
+            <form id="form-message">
+                <label for="message-input" hidden>Message</label>
+                <input autocomplete="off" class="message-box__input" name="message-box__input" id="message-box__input"
+                    type="text">
+                <button style="display: block;width: fit-content;margin: auto;margin-top: 5px" type="submit">Send
+                    Message</button>
+            </form>
+            <form id="form-button-container">
+                <button id="video-toggler" type="button">Toggle Video</button>
+                <button id="audio-toggler" type="button">Toggle Audio</button>
+            </form>
+            <div class="videos">
+                <video id="local-video" class="videos__video" muted autoplay></video>
+                <video id="remote-video" class="videos__video" muted autoplay></video>
+            </div>
+        </div>
+    </body>
+
+</html>

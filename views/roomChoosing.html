@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <form class="room-form" onsubmit="onSubmit(event)" action="" method="GET">
+            <input type="text" id="room-id">
+            <input type="hidden" id="role">
+            <button role="call" type="submit">Call</button>
+            <button role="answer" type="submit">Answer</button>
+        </form>
+    </body>
+    <script>
+        const ws = new WebSocket("ws://localhost:8000");
+        let isLoading = false;
+        ws.onopen = () => {
+            ws.onmessage = e => {
+                const data = JSON.parse(e.data);
+                const type = data.type;
+                switch (type) {
+                    case "redirect":
+                        console.log(data.roomId);
+                        window.location.assign(data.roomId);
+                        break;
+                }
+            };
+        }
+        const roomIdEle = document.getElementById('room-id');
+        function onSubmit(e) {
+            e.preventDefault();
+            if (isLoading) return;
+            // console.log(e.submitter)
+            if (e.submitter.getAttribute('role') === "call") {
+                e.target.role.value = "call";
+                isLoading = true;
+                if (ws.readyState === 1) {
+                    ws.send(JSON.stringify({
+                        type: "create",
+                    }))
+                }
+            }
+            else if (e.submitter.getAttribute('role') === "answer") {
+                e.target.role.value = "answer";
+                isLoading = true;
+                if (ws.readyState === 1) {
+                    ws.send(JSON.stringify({
+                        type: "join",
+                        room: roomIdEle.value
+                    }));
+                }
+            }
+        }
+    </script>
+
+</html>

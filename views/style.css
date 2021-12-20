@@ -1,0 +1,88 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    background-color: hsl(0, 10%, 70%);
+}
+button:focus{
+    outline: none;
+}
+button{
+    padding: .25rem;
+    cursor: pointer;
+}
+
+.container{
+    display: grid;
+    grid-auto-flow: row;
+    justify-items: center;
+}
+.message-box{
+    
+    margin: auto;
+    width: 75%;
+    overflow: auto;
+    max-height: 300px;
+    overflow-wrap: break-word;
+    margin: 1rem;
+}
+.message-box__messages{
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    list-style: none;
+    padding: 0;
+}
+.message-box__message{
+    max-width: 70%;
+    width: 100%;
+    background-color: rgba(45, 55, 66, 0.26);
+    padding: .5rem;
+}
+.message-box__message--right{
+    float: right;
+    margin: auto;
+    background-color: hsla(212, 39%, 39%, 0.589);
+}
+.message-box__message--left{
+    float: left;
+}
+.message-box{
+    
+}
+.message-box__input{
+    width: 100%;
+    padding: 1rem;
+}
+#form-message{
+    width: 75%;
+}
+.videos{
+    display: flex;
+    width: 75%;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+    gap: .5rem;
+    margin-block: 1rem;
+}
+.videos__video{
+    width: 49%;
+    height: 300px;
+}
+#form-button-container{
+    margin-top: 1rem;
+}
+#form-buttons-container > * {
+    padding: .5rem;
+}
+@media screen and (max-width: 900px) {
+    .videos{
+        width: 90%;
+    }
+    .videos__video{
+        width: 100%;
+    }
+}
