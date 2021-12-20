@@ -46,7 +46,7 @@ const localStreamConstraints = {
     audio: true
 }
 
-const ws = new WebSocket("ws://localhost:8000");
+const ws = new WebSocket("ws://" + window.location.host);
 
 
 function sendSocket(data) {
