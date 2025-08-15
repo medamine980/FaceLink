@@ -83,7 +83,7 @@ const server = http.createServer((req, res) => {
         res.end('');
     }
 })
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log("Sever Started at", PORT)
 })
 const wss = new WebSocketServer({ server })

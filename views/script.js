@@ -264,13 +264,7 @@ function closePeerConnection() {
 function getStreamData() {
     return new Promise(async res => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: {
-                        ideal: ['user', 'environment']
-                    }
-                }
-            });
+            const stream = await navigator.mediaDevices.getUserMedia(CONSTRAINTS);
             localStream = stream;
             localVideoEle.srcObject = stream;
             localStream.getVideoTracks()[0].onended = e => {

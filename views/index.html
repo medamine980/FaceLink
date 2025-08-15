@@ -12,15 +12,18 @@
 
     <body>
         <div class="container">
+            <h1>Video Chat</h1>
             <section class="link-container">
-                <input id="id" type="text" readonly aria-readonly="true">
+                <h2 hidden>Link to share</h2>
+                <input id="id" type="text" readonly aria-readonly="true" aria-label="link">
                 <button class="copy-to-clipboard">Copy to clipboard</button>
             </section>
-            <div class="message-box">
+            <section class="message-box">
+                <h2 hidden>Messages</h2>
                 <ul class="message-box__messages">
                     <li class="message-box__message">Begin Messaging</li>
                 </ul>
-            </div>
+            </section>
             <form id="form-message">
                 <label for="message-input" hidden>Message</label>
                 <input autocomplete="off" class="message-box__input" name="message-box__input" id="message-box__input"
@@ -28,14 +31,16 @@
                 <button style="display: block;width: fit-content;margin: auto;margin-top: 5px" type="submit">Send
                     Message</button>
             </form>
-            <form id="form-button-container">
-                <button id="video-toggler" type="button">Toggle Video</button>
-                <button id="audio-toggler" type="button">Toggle Audio</button>
-            </form>
-            <div class="videos">
+            <div id="togglers" class="togglers" aria-label="togglers">
+                <button role="switch" aria-checked="true" id="video-toggler" class="togglers__video-toggler"
+                    type="button">Toggle Video</button>
+                <button role="switch" aria-checked="true" id="audio-toggler" class="togglers__audio-toggler"
+                    type="button">Toggle Audio</button>
+            </div>
+            <section class="videos">
                 <video id="local-video" class="videos__video" muted autoplay></video>
                 <video id="remote-video" class="videos__video" autoplay></video>
-            </div>
+            </section>
         </div>
     </body>
 
