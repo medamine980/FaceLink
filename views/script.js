@@ -17,10 +17,21 @@ let isInitiator = false;
 let otherPeerConnected = false;
 let offerSent;
 // Elements
+const videosContainerEle = document.querySelector('[data-videos]');
 const videoToggler = document.getElementById('video-toggler');
 const audioToggler = document.getElementById('audio-toggler');
+const messageToggler = document.querySelector("[data-message-toggler]");
+const leaveCallEle = document.querySelector("[data-leave-call]");
 const messageForm = document.getElementById("form-message");
-const messagesBoxEle = document.getElementsByClassName("message-box__messages")[0];
+/**
+ * @type {HTMLInputElement}
+ */
+const messageInputEle = document.querySelector("[name='message-box__input']");
+const messageSendBtn = document.querySelector("[data-send-message-btn]");
+const messagesBoxEle = document.querySelector("[data-messages-list]");
+const messageContainerEle = document.querySelector("[data-message-container]");
+
+
 
 
 /**
@@ -37,7 +48,15 @@ const CONSTRAINTS = {
     audio: true
 }
 const ROOM = window.location.pathname.replace(/^\//, "");
+const VIDEO_COLUMN_CLASS = 'videos--column';
+const OFF_DANGER_TOGGLER_STATE_CLASS = "controllers__toggler--danger--active";
+const OFF_INFO_TOGGLER_STATE_CLASS = "controllers__toggler--info--active";
+const INVISIBLE_MESSAGE_CONTAINER_CLASS = 'message-container--invisible';
 
+const LEFT_MESSAGE_CLASS = 'message-container__message-box__messages__message--left';
+const RIGHT_MESSAGE_CLASS = 'message-container__message-box__messages__message--right';
+const MIDDLE_MESSAGE_CLASS = 'message-container__message-box__messages__message--middle';
+const MESSAGE_ITEM_CLASS = 'message-container__message-box__messages__message';
 
 //Initialize turn/stun server here
 
@@ -56,7 +75,7 @@ function sendSocket(data) {
 }
 
 document.getElementById("id").value = window.location.origin + "/" + ROOM;
-document.querySelectorAll(".copy-to-clipboard").forEach(ele => {
+document.querySelectorAll("[data-clipboard-btn]").forEach(ele => {
     ele.addEventListener('click', e => {
         e.target.previousElementSibling.select();
         document.execCommand('copy');
@@ -68,20 +87,19 @@ ws.addEventListener('open', async e => {
         if (ws.readyState === 1)
             sendSocket({
                 type: "close",
-            })
+            });
         // ws.close();
     };
     await getStreamData();
     messageForm.onsubmit = e => {
         e.preventDefault();
-        if (!dc) return
-        const inputEle = messageForm['message-box__input'];
-        if (inputEle.value) {
+        if (!dc) return;
+        if (messageInputEle.value) {
             dc.send(JSON.stringify({
-                data: inputEle.value.trim()
+                data: messageInputEle.value.trim()
             }));
-            handleMessages(dc.label, inputEle.value.trim());
-            inputEle.value = "";
+            handleMessages(dc.label, messageInputEle.value.trim());
+            messageInputEle.value = "";
         }
     }
 });
@@ -91,7 +109,6 @@ ws.addEventListener('message', async ({ data }) => {
     switch (type) {
         case 'created':
             isInitiator = true;
-            console.log('isInitiator');
             break;
         case 'i_joined':
             break;
@@ -108,7 +125,6 @@ ws.addEventListener('message', async ({ data }) => {
                 localStream.getTracks().forEach(track => {
                     track.stop();
                 })
-                console.log("full")
                 removeStreamFromMediaElement(localStream);
             }
         case 'candidate':
@@ -131,7 +147,8 @@ ws.addEventListener('message', async ({ data }) => {
             removeStreamFromMediaElement(remoteVideoEle);
             break;
     }
-})
+});
+
 function createPeerConnection() {
     pc = new RTCPeerConnection(
     );
@@ -147,10 +164,11 @@ function createPeerConnection() {
         /*** @type {RTCDataChannel}  */
         dc = pc.createDataChannel('message_channel', { ordered: true, maxPacketLifeTime: 5000 });
         dc.onopen = e => {
-
+            handleUserConnectionStateMessage('User has connected');
         };
+        dc.onclose = () => handleUserConnectionStateMessage('User has disconnected');
         pc.ondatachannel = e => {
-            console.log('ondatachannel')
+            // console.log('ondatachannel')
         };
         dc.onmessage = msgEvent => {
             const { data } = JSON.parse(msgEvent.data);
@@ -160,14 +178,18 @@ function createPeerConnection() {
         doCall();
     }
     else {
+        pc.onopen = e => {
+            console.dir(e);
+        }
         pc.ondatachannel = e => {
-            console.log('ondatachannel');
             dc = e.channel;
+            dc.onopen = () => handleUserConnectionStateMessage('User is connected');
             dc.onmessage = msgEvent => {
                 const { data } = JSON.parse(msgEvent.data);
                 handleMessages(dc.label, data, false);
             }
-            dc.onerror = console.log
+            dc.onerror = console.log;
+            dc.onclose = () => handleUserConnectionStateMessage('User has disconnected');
         }
 
     }
@@ -194,14 +216,24 @@ function handleAddedTrack(e) {
 function handleMessages(label, message, isMine = true) {
     switch (label) {
         case "message_channel":
+            {
+                const li = document.createElement("li");
+                li.append(message);
+                li.classList.add(MESSAGE_ITEM_CLASS);
+                isMine ?
+                    li.classList.add(RIGHT_MESSAGE_CLASS)
+                    : li.classList.add(LEFT_MESSAGE_CLASS);
+                messagesBoxEle.append(li);
+                break;
+            }
+        case "info_channel": {
             const li = document.createElement("li");
             li.append(message);
-            li.classList.add("message-box__message");
-            isMine ?
-                li.classList.add("message-box__message--right")
-                : li.classList.add("message-box__message--left");
+            li.classList.add(MESSAGE_ITEM_CLASS);
+            li.classList.add(MIDDLE_MESSAGE_CLASS);
             messagesBoxEle.append(li);
             break;
+        }
     }
 }
 /**
@@ -247,6 +279,10 @@ async function doAnswer() {
     return new Promise(res => res(answer));
 }
 
+function handleUserConnectionStateMessage(message) {
+    handleMessages('info_channel', message);
+}
+
 function closePeerConnection() {
     if (pc) {
         pc.getTransceivers().forEach(transceiver => transceiver.stop());
@@ -256,6 +292,29 @@ function closePeerConnection() {
     pc = null;
     dc = null;
 }
+
+messageInputEle.addEventListener('input', () => {
+    const value = messageInputEle.value.trim();
+    if (value === "") {
+        messageSendBtn.disabled = true;
+    } else {
+        messageSendBtn.disabled = false;
+    }
+})
+
+messageToggler.addEventListener('click', () => {
+    messageContainerEle.classList.toggle(INVISIBLE_MESSAGE_CONTAINER_CLASS);
+    messageToggler.classList.toggle(OFF_INFO_TOGGLER_STATE_CLASS);
+    videosContainerEle.classList.toggle(VIDEO_COLUMN_CLASS);
+});
+
+leaveCallEle.addEventListener('click', () => {
+    // pc.close();
+    // sendSocket({
+    //     type: "close",
+    // });
+    this.window.location.href = '/';
+});
 
 /**
  * 
@@ -276,11 +335,11 @@ function getStreamData() {
                 type: "join_create",
             });
             videoToggler.addEventListener('click', e => {
-                toggleVideo();
+                toggleVideo(videoToggler);
             });
             audioToggler.addEventListener('click', e => {
-                toggleAudio();
-            })
+                toggleAudio(audioToggler);
+            });
             res(stream);
         } catch (e) {
             console.log(e.message)
@@ -291,13 +350,21 @@ function getStreamData() {
         }
     })
 }
-function toggleVideo() {
-    if (localStream)
-        localStream.getVideoTracks().forEach(track => track.enabled = !track.enabled)
+function toggleVideo(element) {
+    if (localStream) {
+        let isEnabled;
+        localStream.getVideoTracks().forEach(track => isEnabled = track.enabled = !track.enabled);
+        isEnabled ? element.classList.remove(OFF_DANGER_TOGGLER_STATE_CLASS) :
+            element.classList.add(OFF_DANGER_TOGGLER_STATE_CLASS);
+    }
 }
-function toggleAudio() {
-    if (localStream)
-        localStream.getAudioTracks().forEach(track => track.enabled = !track.enabled)
+function toggleAudio(element) {
+    if (localStream) {
+        let isEnabled;
+        localStream.getAudioTracks().forEach(track => isEnabled = track.enabled = !track.enabled)
+        isEnabled ? element.classList.remove(OFF_DANGER_TOGGLER_STATE_CLASS) :
+            element.classList.add(OFF_DANGER_TOGGLER_STATE_CLASS);
+    }
 }
 function removeStreamFromMediaElement(videoElement) {
     videoElement.srcObject = null;

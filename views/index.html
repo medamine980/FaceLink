@@ -1,47 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Video Chat</title>
-        <link rel="stylesheet" href="style.css">
-        <script src="script.js" defer></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
 
-    <body>
-        <div class="container">
-            <h1>Video Chat</h1>
-            <section class="link-container">
-                <h2 hidden>Link to share</h2>
-                <input id="id" type="text" readonly aria-readonly="true" aria-label="link">
-                <button class="copy-to-clipboard">Copy to clipboard</button>
-            </section>
-            <section class="message-box">
-                <h2 hidden>Messages</h2>
-                <ul class="message-box__messages">
-                    <li class="message-box__message">Begin Messaging</li>
-                </ul>
-            </section>
-            <form id="form-message">
-                <label for="message-input" hidden>Message</label>
-                <input autocomplete="off" class="message-box__input" name="message-box__input" id="message-box__input"
-                    type="text">
-                <button style="display: block;width: fit-content;margin: auto;margin-top: 5px" type="submit">Send
-                    Message</button>
-            </form>
-            <div id="togglers" class="togglers" aria-label="togglers">
-                <button role="switch" aria-checked="true" id="video-toggler" class="togglers__video-toggler"
-                    type="button">Toggle Video</button>
-                <button role="switch" aria-checked="true" id="audio-toggler" class="togglers__audio-toggler"
-                    type="button">Toggle Audio</button>
+<body>
+    <div class="app-container">
+        <div class="inner-container">
+            <div class="app-bar">
+                <h1 class="app-bar__title">Video Chat</h1>
+                <section class="app-bar__link-container">
+                    <h2 class="app-bar__link-container__label">Link to share</h2>
+                    <input class="app-bar__link-container__copy-input" id="id" type="text" readonly aria-readonly="true"
+                        aria-label="link">
+                    <button data-clipboard-btn class="app-bar__link-container__copy-btn">
+                        <img width="20" src="images/clipboard.png">
+                    </button>
+                </section>
             </div>
-            <section class="videos">
-                <video id="local-video" class="videos__video" muted autoplay></video>
+            <section class="videos" aria-label="videos-section" data-videos>
                 <video id="remote-video" class="videos__video" autoplay></video>
+                <video id="local-video" class="videos__video" muted autoplay></video>
+            </section>
+            <section class="controllers">
+                <button role="switch" aria-checked="true" id="video-toggler"
+                    class="controllers__toggler controllers__toggler--danger" type="button">
+                    <img width="20" src="images/no-video.png">
+                </button>
+                <button role="switch" aria-checked="true" id="audio-toggler"
+                    class="controllers__toggler controllers__toggler--danger" type="button">
+                    <img width="20" src="images/no-mic.png">
+                </button>
+                <button role="switch" aria-checked="true" data-message-toggler
+                    class="controllers__toggler controllers__toggler--info" type="button">
+                    <img width="20" src="images/message.png">
+                </button>
+                <button data-leave-call role="switch" aria-checked="true" data-message-toggler
+                    class="controllers__toggler controllers__toggler--danger controllers__toggler--danger--active"
+                    type="button">
+                    <img width="20" src="images/call.png">
+                </button>
             </section>
         </div>
-    </body>
+
+        <div class="message-container message-container--invisible" data-message-container>
+            <section class="message-container__message-box">
+                <h2 class="message-container__message-box__title">Chat</h2>
+                <ul data-messages-list class="message-container__message-box__messages">
+                </ul>
+            </section>
+            <form id="form-message" class="message-container__form-message">
+                <label for="message-input" hidden>Message</label>
+                <input autocomplete="off" placeholder="Type your message here..."
+                    class="message-container__form-message__input" name="message-box__input" id="message-box__input"
+                    type="text">
+                <button disabled data-send-message-btn class="message-container__form-message__send-btn" type="submit">
+                    <img width="16" src="images/send-message.png">
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+</body>
 
 </html>

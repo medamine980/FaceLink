@@ -33,8 +33,8 @@ function handleQuery(query) {
 
 const server = http.createServer((req, res) => {
     // console.log(req.url.match(/\/\d+/))
-    res.setHeader('Content-Security-Policy',
-        "default-src 'self' ws:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:")
+    // res.setHeader('Content-Security-Policy',
+    //     "default-src 'self' ws:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:")
     res.setHeader('Referrer-Policy', 'no-referrer, strict-origin');
     res.setHeader('X-Frame-Options', 'sameorigin');
     const url = req.url.match(/^\/([A-Z0-9-]*)/ig)[0];
@@ -58,7 +58,7 @@ const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'text/html');
         fs.createReadStream(path.resolve(__dirname, "views/index.html")).pipe(res);
     }
-    else if (url.match(/^\/((?:script)|(?:style))$/)) {
+    else if (url.match(/^\/((?:script)|(?:style)|(?:images))$/)) {
         const filePath = originalUrl;
         // if (filePath.match(/(style)$/)) extension = ".css";
         // else if (filePath.match(/(script)$/)) extension = ".js";
@@ -92,7 +92,6 @@ const users = {};
 
 
 wss.on('connection', socket => {
-
     socket.on('message', data => {
         data = JSON.parse(Buffer.from(data).toString('utf8'));
         const type = data.type;
