@@ -164,9 +164,9 @@ function createPeerConnection() {
         /*** @type {RTCDataChannel}  */
         dc = pc.createDataChannel('message_channel', { ordered: true, maxPacketLifeTime: 5000 });
         dc.onopen = e => {
-            handleUserConnectionStateMessage('User has connected');
+            handleUserConnectionStateMessage('Your callee has connected');
         };
-        dc.onclose = () => handleUserConnectionStateMessage('User has disconnected');
+        dc.onclose = () => handleUserConnectionStateMessage('Your callee has disconnected');
         pc.ondatachannel = e => {
             // console.log('ondatachannel')
         };
@@ -183,13 +183,13 @@ function createPeerConnection() {
         }
         pc.ondatachannel = e => {
             dc = e.channel;
-            dc.onopen = () => handleUserConnectionStateMessage('User is connected');
+            dc.onopen = () => handleUserConnectionStateMessage('Your caller is connected');
             dc.onmessage = msgEvent => {
                 const { data } = JSON.parse(msgEvent.data);
                 handleMessages(dc.label, data, false);
             }
             dc.onerror = console.log;
-            dc.onclose = () => handleUserConnectionStateMessage('User has disconnected');
+            dc.onclose = () => handleUserConnectionStateMessage('Your caller has disconnected');
         }
 
     }
