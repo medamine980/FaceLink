@@ -25,6 +25,8 @@ body {
     margin: 0;
     background-color: hsl(0, 50%, 100%);
     font-family: "Arimo";
+    scrollbar-color: var(--blue-color) var(--light-black-color);
+    scrollbar-width: thin;
 }
 
 input {
