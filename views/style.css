@@ -42,7 +42,7 @@ input {
     width: 100%;
     flex-direction: column;
     align-items: center;
-    gap: .5em;
+    gap: 1em;
     padding: 8px;
 }
 
@@ -87,6 +87,7 @@ input {
     border-bottom: 1px solid var(--border-color);
     width: 100%;
     align-items: center;
+    justify-content: center;
     overflow-y: auto;
     scrollbar-color: var(--blue-color) var(--light-black-color);
     scrollbar-width: thin;
@@ -110,6 +111,8 @@ input {
     object-fit: cover;
     width: 100%;
     border: 1px var(--border-color) solid;
+    max-width: 600px;
+    max-height: 600px;
 }
 
 .controllers {
@@ -167,6 +170,12 @@ input {
     display: none;
 }
 
+.message-container__message-box {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
 .message-container__message-box__title {
     color: var(--text-color);
     display: block;
@@ -181,6 +190,9 @@ input {
     gap: 8px;
     list-style: none;
     padding: 8px;
+    overflow: auto;
+    scrollbar-color: var(--blue-color) var(--light-black-color);
+    scrollbar-width: thin;
 }
 
 .message-container__message-box__messages__message {
@@ -249,4 +261,20 @@ input {
 }
 
 
-@media screen and (max-width: 900px) {}
+@media screen and (max-width: 900px) {
+    .app-container {
+        flex-wrap: wrap;
+    }
+
+    .videos {
+        flex-direction: column;
+    }
+
+    .message-container {
+        width: 100%;
+    }
+
+    .message-container__message-box__messages {
+        height: 300px;
+    }
+}
