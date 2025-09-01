@@ -293,19 +293,19 @@ function closePeerConnection() {
     dc = null;
 }
 
-messageInputEle.addEventListener('input', () => {
-    const value = messageInputEle.value.trim();
-    if (value === "") {
-        messageSendBtn.disabled = true;
-    } else {
-        messageSendBtn.disabled = false;
-    }
-})
+// messageInputEle.addEventListener('input', () => {
+// const value = messageInputEle.value.trim();
+// if (value === "") {
+//     messageSendBtn.disabled = true;
+// } else {
+//     messageSendBtn.disabled = false;
+// }
+// })
 
 messageToggler.addEventListener('click', () => {
     messageContainerEle.classList.toggle(INVISIBLE_MESSAGE_CONTAINER_CLASS);
     messageToggler.classList.toggle(OFF_INFO_TOGGLER_STATE_CLASS);
-    videosContainerEle.classList.toggle(VIDEO_COLUMN_CLASS);
+    // videosContainerEle.classList.toggle(VIDEO_COLUMN_CLASS);
     if (!messageContainerEle.classList.contains(INVISIBLE_MESSAGE_CONTAINER_CLASS)) {
         window.scrollTo({ behavior: 'smooth', top: 99999 });
     }

@@ -89,7 +89,7 @@ input {
     border-bottom: 1px solid var(--border-color);
     width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     overflow-y: auto;
     scrollbar-color: var(--blue-color) var(--light-black-color);
     scrollbar-width: thin;
@@ -256,11 +256,11 @@ input {
     background-color: var(--blue-color);
 }
 
-.message-container__form-message__send-btn:disabled {
+/* .message-container__form-message__send-btn:disabled {
     cursor: initial;
     border: none;
     opacity: .5;
-}
+} */
 
 
 @media screen and (max-width: 900px) {
