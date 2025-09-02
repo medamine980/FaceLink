@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap');
+
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+:root {
+    /* --black-color: hsl(240, 5.9%, 10%); */
+    --black-color: #09090b;
+    --light-black-color: #18181b;
+    --lighter-black-color: #202022;
+    --blue-color: #203a55;
+    --light-blue-color: #0080ff;
+    --dark-color: #365166;
+    --red-color: #ef4444;
+    --dark-red: #da3f3f;
+    --border-color: #2b2b2d;
+    --text-color: #f7f7f7;
+    --white-transparent: #ffffff1a;
+    --gray-color: #dbdbdb;
+}
+
+body {
+    font-family: 'Arimo';
+    font-size: 16px;
+}
+
+input {
+    font-family: "Arimo";
+}
+
+.flash-message {
+    position: fixed;
+    top: .5em;
+    right: .5em;
+    display: flex;
+    width: 350px;
+    flex-direction: column;
+    padding: 1em;
+    border-radius: .5em;
+    border-top-right-radius: 0;
+    transform: translateX(150vw);
+    animation: flash-slide-left 1s forwards;
+    gap: 1em;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.flash-message:hover {
+    opacity: .9;
+}
+
+.flash-message__rhombus {
+    width: 0;
+    height: 0;
+    top: 0;
+    right: 0;
+    border: 8px solid transparent;
+    border-left-color: var(--light-blue-color);
+    border-bottom-color: var(--light-blue-color);
+    position: absolute;
+    transform: translateX(38%) rotate(90deg);
+}
+
+.flash-message__info {
+    font-size: .8rem;
+}
+
+.flash-message--error {
+    background: var(--dark-red);
+}
+
+.flash-message--success {
+    background-color: var(--light-blue-color);
+}
+
+.flash-message--disappear {
+    animation: flash-disappear-right 1s forwards;
+}
+
+@keyframes flash-slide-left {
+    20% {
+        transform: translateX(-25%);
+    }
+
+    50% {
+        transform: translateX(20%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes flash-disappear-right {
+    0% {
+        transform: translateX(0%);
+    }
+
+    50% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(150vw);
+    }
+}

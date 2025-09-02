@@ -3,6 +3,7 @@ const { WebSocketServer } = require("ws")
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { pipeFileContent, readFile } = require("./utils");
 const PORT = process.env.PORT || 8000
 
 
@@ -32,43 +33,45 @@ function handleQuery(query) {
 }
 
 const server = http.createServer((req, res) => {
-    // console.log(req.url.match(/\/\d+/))
     // res.setHeader('Content-Security-Policy',
     //     "default-src 'self' ws:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:")
     res.setHeader('Referrer-Policy', 'no-referrer, strict-origin');
     res.setHeader('X-Frame-Options', 'sameorigin');
-    const url = req.url.match(/^\/([A-Z0-9-]*)/ig)[0];
+    const url = req.url.match(/^\/([A-Z0-9-.]*)/ig)[0];
     const originalUrl = req.url;
     let query = !req.url.match(/\?(.+)/) ? null : req.url.match(/\?(.+)/)[1];
     query = handleQuery(query);
     if (url === "/") {
-        // res.setHeader('Content-Type', 'text/html');
-        // const htmlFile = fs.readFileSync(path.resolve(__dirname, "views/roomChoosing.html"), 'utf8');
-        // res.setHeader('Content-Length', htmlFile.length);
-        // res.write(htmlFile);
         // res.end("");
-        res.writeHead(302, {
-            location: "/" + Date.now(),
-        });
-        res.end('')
-    }
-    else if (url.match(/\/\d+$/)) {
-        const roomId = url.match(/\/(\d+)$/)[1];
-        // const role = query['role'];
+        // res.writeHead(302, {
+        //     location: "/" + Date.now(),
+        // });
         res.setHeader('Content-Type', 'text/html');
-        fs.createReadStream(path.resolve(__dirname, "views/index.html")).pipe(res);
+        pipeFileContent(path.resolve(__dirname, "views/index.html"), res);
+
     }
-    else if (url.match(/^\/((?:script)|(?:style)|(?:images))$/)) {
-        const filePath = originalUrl;
+    else if (url === "/call") {
+        if (query == null || query["id"] == null || isNaN(Number(query["id"]))) {
+            res.writeHead(302, {
+                location: '/'
+            });
+            res.end('');
+        } else {
+            res.setHeader('Content-Type', 'text/html');
+            pipeFileContent(path.resolve(__dirname, "views/call.html"), res);
+        }
+    }
+    else if (url.match(/^\/((?:js)|(?:css)|(?:images))$/)) {
+        const filePath = path.resolve(__dirname, `views${originalUrl}`);
         // if (filePath.match(/(style)$/)) extension = ".css";
         // else if (filePath.match(/(script)$/)) extension = ".js";
         try {
-            const file = fs.readFileSync(path.resolve(__dirname, `views` + filePath));
+            const file = readFile(filePath);
             if (filePath.match(/\.css$/)) res.setHeader('Content-Type', 'text/css');
             else if (filePath.match(/\.js$/)) res.setHeader('Content-Type', 'text/javascript');
+            else if (filePath.match(/\.svg$/)) res.setHeader('Content-Type', 'image/svg+xml')
             res.setHeader('Content-Length', file.length);
-            res.write(file);
-            res.end('');
+            res.end(file);
         } catch (e) {
             console.log(e.message)
             res.setHeader('Content-Type', 'text/plain');
@@ -166,6 +169,7 @@ wss.on('connection', socket => {
 function stringifyData(data) {
     return JSON.stringify(data);
 }
+
 function removeUser(socket) {
     const ObjectToArray = Object.entries(users);
     const [room, usersInRoom] = ObjectToArray.find(o =>

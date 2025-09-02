@@ -1,0 +1,132 @@
+@import url('./global.css');
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --border-color: #ffffff1a;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    background-image: linear-gradient(135deg, var(--black-color), var(--blue-color));
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+input,
+button {
+    color: var(--text-color);
+}
+
+.container {
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "title title"
+        "create-room call-room"
+    ;
+    row-gap: 2.5em;
+    column-gap: 16px;
+    padding: 8px;
+}
+
+.app-name {
+    grid-area: title;
+    place-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5em;
+    user-select: none;
+}
+
+.inner-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white-transparent);
+    padding: 2em;
+    border-radius: 12px;
+    height: fit-content;
+    gap: 12px;
+    height: 100%;
+}
+
+.inner-container:nth-of-type(1) {
+    grid-area: create-room
+}
+
+.inner-container:nth-of-type(2) {
+    grid-area: call-room
+}
+
+.inner-container__title {
+    align-self: center;
+}
+
+.inner-container__subtitle {
+    color: var(--gray-color);
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+
+.inner-container__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.inner-container__form__inner-container {
+    display: flex;
+    gap: 12px;
+}
+
+.inner-container__form__label {
+    color: var(--gray-color);
+}
+
+.inner-container__form__input {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--white-transparent);
+    outline: none !important;
+    flex: 2;
+}
+
+.inner-container__form__copy-btn {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--white-transparent);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: .2s;
+}
+
+.inner-container__form__copy-btn:hover {
+    background-color: var(--blue-color);
+}
+
+.inner-container__form__create-btn {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    background-color: var(--light-blue-color);
+    transition: .2s;
+    font-weight: bold;
+}
+
+
+.inner-container__form__create-btn:hover {
+    background-color: var(--blue-color);
+}

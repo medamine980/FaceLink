@@ -3,75 +3,48 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Chat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <title>Facelink</title>
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/global.js" defer></script>
+    <script src="js/index.js" defer></script>
 </head>
 
 <body>
-    <div class="app-container">
+    <div class="container">
+        <h1 class="app-name"><img src="./images/logo.png" alt="app logo" /></h1>
         <div class="inner-container">
-            <div class="app-bar">
-                <h1 class="app-bar__title">Video Chat</h1>
-                <section class="app-bar__link-container">
-                    <h2 class="app-bar__link-container__label">Link to share</h2>
-                    <input class="app-bar__link-container__copy-input" id="id" type="text" readonly aria-readonly="true"
-                        aria-label="link">
-                    <button data-clipboard-btn class="app-bar__link-container__copy-btn">
-                        <img width="20" src="images/clipboard.png">
+            <h2 class="inner-container__title"><img src="./images/flash.png" alt="flash" width="16"> Start Instant Call
+            </h2>
+            <div class="inner-container__subtitle">Create your room and share it with your friends</div>
+            <form data-new-room-form class="inner-container__form">
+                <label class="inner-container__form__label">Your Room ID</label>
+                <div class="inner-container__form__inner-container">
+                    <input data-new-room-id-input class="inner-container__form__input" type="text"
+                        value="lkealmkemzakemaz" readonly>
+                    <button type="button" data-copy-to-clipboard class="inner-container__form__copy-btn">
+                        <img width="16" src="images/clipboard.png">
                     </button>
-                </section>
-            </div>
-            <section class="videos" aria-label="videos-section" data-videos>
-                <video id="remote-video" class="videos__video" autoplay></video>
-                <video id="local-video" class="videos__video" muted autoplay></video>
-            </section>
-            <section class="controllers">
-                <button role="switch" aria-checked="true" id="video-toggler"
-                    class="controllers__toggler controllers__toggler--danger" type="button">
-                    <img width="20" src="images/no-video.png">
-                </button>
-                <button role="switch" aria-checked="true" id="audio-toggler"
-                    class="controllers__toggler controllers__toggler--danger" type="button">
-                    <img width="20" src="images/no-mic.png">
-                </button>
-                <button role="switch" aria-checked="true" data-message-toggler
-                    class="controllers__toggler controllers__toggler--info" type="button">
-                    <img width="20" src="images/message.png">
-                </button>
-                <button data-leave-call role="switch" aria-checked="true" data-message-toggler
-                    class="controllers__toggler controllers__toggler--danger controllers__toggler--danger--active"
-                    type="button">
-                    <img width="20" src="images/call.png">
-                </button>
-            </section>
-        </div>
-
-        <div class="message-container message-container--invisible" data-message-container>
-            <section class="message-container__message-box">
-                <h2 class="message-container__message-box__title">Chat</h2>
-                <ul data-messages-list class="message-container__message-box__messages">
-                </ul>
-            </section>
-            <form id="form-message" class="message-container__form-message">
-                <label for="message-input" hidden>Message</label>
-                <input autocomplete="off" placeholder="Type your message here..."
-                    class="message-container__form-message__input" name="message-box__input" id="message-box__input"
-                    type="text">
-                <button data-send-message-btn class="message-container__form-message__send-btn" type="submit">
-                    <img width="16" src="images/send-message.png">
-                </button>
+                </div>
+                <button class="inner-container__form__create-btn" type="submit">Start Call</button>
             </form>
         </div>
-    </div>
-
-
+        <div class="inner-container">
+            <h2 class="inner-container__title"><img src="./images/users.png" alt="users" width="16"> Join Call</h2>
+            <div class="inner-container__subtitle">Already have a room ID? Enter it below</div>
+            <form data-room-form class="inner-container__form">
+                <label class="inner-container__form__label">Room ID</label>
+                <div class="inner-container__form__inner-container">
+                    <input data-room-id-input class="inner-container__form__input" type="text"
+                        placeholder="Enter Room ID...">
+                    <button class="inner-container__form__copy-btn">
+                        <img width="16" src="images/clipboard.png">
+                    </button>
+                </div>
+                <button class="inner-container__form__create-btn" type="submit">Join Call</button>
+            </form>
+        </div>
 </body>
 
 </html>
