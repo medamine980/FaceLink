@@ -32,6 +32,10 @@ input {
     font-family: "Arimo";
 }
 
+img {
+    user-select: none;
+}
+
 .flash-message {
     position: fixed;
     top: .5em;
@@ -53,16 +57,24 @@ input {
     opacity: .9;
 }
 
-.flash-message__rhombus {
+.flash-message__triangle {
     width: 0;
     height: 0;
     top: 0;
     right: 0;
     border: 8px solid transparent;
-    border-left-color: var(--light-blue-color);
-    border-bottom-color: var(--light-blue-color);
     position: absolute;
     transform: translateX(38%) rotate(90deg);
+}
+
+.flash-message--error .flash-message__triangle {
+    border-left-color: var(--dark-red);
+    border-bottom-color: var(--dark-red);
+}
+
+.flash-message--success .flash-message__triangle {
+    border-left-color: var(--light-blue-color);
+    border-bottom-color: var(--light-blue-color);
 }
 
 .flash-message__info {

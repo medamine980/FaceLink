@@ -45,7 +45,6 @@ button {
     flex-direction: column;
     align-items: center;
     gap: .5em;
-    user-select: none;
 }
 
 .inner-container {
@@ -95,7 +94,7 @@ button {
 }
 
 .inner-container__form__input {
-    padding: 8px;
+    padding: 16px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     background-color: var(--white-transparent);

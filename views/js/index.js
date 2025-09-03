@@ -36,7 +36,11 @@ formRoom.addEventListener('submit', e => {
     e.preventDefault();
     const roomId = roomIdInput.value.trim();
     if (roomId === '') {
-        flashMessage('error', 'Error', 'Please enter the room ID !')
+        flashMessage('error', 'Invalid Room ID', 'Please enter the room ID !')
+        return;
+    }
+    if (isNaN(Number(roomId))) {
+        flashMessage('error', 'Invalid Room ID', 'Please enter a valid room ID !');
         return;
     }
     window.location.assign(`/call?id=${roomId}`);
