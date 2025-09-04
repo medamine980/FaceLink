@@ -150,8 +150,12 @@ ws.addEventListener('message', async ({ data }) => {
 });
 
 function createPeerConnection() {
-    pc = new RTCPeerConnection(
-    );
+    pc = new RTCPeerConnection({
+        iceServers: [
+            { urls: 'stun:stun1.l.google.com:19302' },
+            { urls: 'stun:stun.cloudflare.com:3478' }
+        ]
+    });
 
     localStream.getTracks().forEach((track) => {
         pc.addTrack(track, localStream);
