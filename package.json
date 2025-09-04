@@ -1,7 +1,7 @@
 {
-  "name": "webrtc",
+  "name": "facelink",
   "version": "1.0.0",
-  "description": "",
+  "description": "App that connects two people into a single room",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
