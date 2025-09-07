@@ -22,4 +22,4 @@ An application that connects two people together, they can talk with eachother t
 
 
 #### Call room
-
+![Call page](./images/call.png)
