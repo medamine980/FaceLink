@@ -127,6 +127,7 @@ ws.addEventListener('message', async ({ data }) => {
                 })
                 removeStreamFromMediaElement(localStream);
             }
+            flashMessage('error', 'Full room', 'The room you joined to is full, please try to cut the call and create a new room');
         case 'candidate':
             if (!pc) break;
             const candidate = new RTCIceCandidate(data.candidate);
